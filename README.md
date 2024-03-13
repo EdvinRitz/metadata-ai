@@ -1,5 +1,9 @@
+**Status:** In-progress (code is activly written)
+
 # metadata-ai
 Repository for bachelor thesis: "Automation using artificial intelligence".
+
+Python script for generating metadata for Word documents using DeBertaV3.
 
 Run test.py in order to run the project.
 
