@@ -9,7 +9,7 @@ qa_model = pipeline("question-answering", "timpal0l/mdeberta-v3-base-squad2")
 
 #"Vad är detta för dokument?" "Vad är detta för process?" "Vilket företag gäller dokumentet?" "Vad är dokumentdatumet?" "Vem är referensperson?" 
 
-questionDocument = "Vad är referensen?"
+questionDocument = "Vad är datumet?"
 
 context = """
 Sida: 1
