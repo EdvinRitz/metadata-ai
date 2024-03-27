@@ -5,7 +5,7 @@ Repository for bachelor thesis: "Automation using artificial intelligence".
 
 Python script for generating metadata for Word documents using DeBERTaV3 through Huggingface.
 
-Run test.py in order to run the project.
+Run test.py with Python 3.12.1 (or newer) in order to run the project.
 
 # Citation
 If you use our project or this repository's contents in your research or project, please cite it as follows:
