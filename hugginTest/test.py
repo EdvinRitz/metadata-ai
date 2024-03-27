@@ -6,25 +6,40 @@ import torch
 from transformers import pipeline
 from shareplum import Site, Office365
 from shareplum.site import Version
-import os
+import docx
 
-site_url = 'https://tamarkiv1.sharepoint.com/sites/Kopia-Migrerat-fran-gamla-gemensam-N'
+site_url = ''
+
+documentText = ''
 
 try:
-    authcookie = Office365('https://tamarkiv1.sharepoint.com', username='', password='').GetCookies()
+    authcookie = Office365('', username='', password='').GetCookies()
     site = Site(site_url, version=Version.v365, authcookie=authcookie)
 
-    folder = site.Folder('Delade dokument/2_Stod/2_9_IT')
+    folder = site.Folder('')
 
-    for file_info in folder.files:
-        print(file_info['Name'])
+    #for file_info in folder.files:
+        #print(file_info['Name'])
         #print(file_info['ServerRelativeUrl'])
 
     #folder.upload_file('Test', 'test.txt')
+    
+    word_file_name = 'Webb-domäner-hosting-20190509.docx'
 
-    #download = folder.get_file('Kalender_mall.xlsx')
+    downloaded_doc = folder.get_file(word_file_name)
 
     #print(download)
+
+    with open(word_file_name, 'wb') as word_file:
+        word_file.write(downloaded_doc)
+
+    doc = docx.Document(word_file_name)
+
+    for para in doc.paragraphs:
+        documentText += para.text + "\n"
+        #print(para.text)
+
+    #print(documentText)
 
 except Exception as e:
     print(f"An error occurred: {e}")
@@ -34,9 +49,18 @@ qa_model = pipeline("question-answering", "timpal0l/mdeberta-v3-base-squad2")
 
 #"Vad är detta för dokument?" "Vad är detta för process?" "Vilket företag gäller dokumentet?" "Vad är dokumentdatumet?" "Vem är referensperson?" 
 
-questionDocument = "Vad är datumet?"
+questionDocument = "Vem är ansvarig utgivare?"
 
-context = """
+context = documentText
+
+res = qa_model(question = questionDocument, context = context)
+
+answer_DocumentType = res['answer']
+
+print(res)
+#print(answer_DocumentType)
+
+"""
 Sida: 1
 Referens: Lars-Erik Hansen
 Direkttel: 08-54 54 15 61
@@ -84,14 +108,6 @@ Fastställdes resultat- och balansräkningar för åren 2006 – 2008.
 § 10  Ansvarsfrihet
 Beviljades styrelsen ansvarsfrihet för 2006-2008 års förvaltning.
 """
-
-res = qa_model(question = questionDocument, context = context)
-
-answer_DocumentType = res['answer']
-
-print(res)
-#print(answer_DocumentType)
-
 
 """FÖRHANDLINGSUNDERLAG 2007
 
