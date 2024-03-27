@@ -4,6 +4,31 @@
 
 import torch
 from transformers import pipeline
+from shareplum import Site, Office365
+from shareplum.site import Version
+import os
+
+site_url = 'https://tamarkiv1.sharepoint.com/sites/Kopia-Migrerat-fran-gamla-gemensam-N'
+
+try:
+    authcookie = Office365('https://tamarkiv1.sharepoint.com', username='', password='').GetCookies()
+    site = Site(site_url, version=Version.v365, authcookie=authcookie)
+
+    folder = site.Folder('Delade dokument/2_Stod/2_9_IT')
+
+    for file_info in folder.files:
+        print(file_info['Name'])
+        #print(file_info['ServerRelativeUrl'])
+
+    #folder.upload_file('Test', 'test.txt')
+
+    #download = folder.get_file('Kalender_mall.xlsx')
+
+    #print(download)
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+
 
 qa_model = pipeline("question-answering", "timpal0l/mdeberta-v3-base-squad2")
 
